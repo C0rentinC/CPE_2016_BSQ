@@ -1,0 +1,24 @@
+#!/bin/bash
+#strasbourg > all
+for MAP in mouli_maps/*
+do
+    MAP2=$(echo $MAP | sed -e 's/mouli_maps\///')
+    echo -e "$MAP2:"
+    NB1=$(./bsq $MAP > lol);
+    MAP=$(echo $MAP | sed -e 's/mouli_maps\//mouli_maps_solved\//')
+    R=$( echo "$?" );
+    if [ $R != "0" ]
+    then
+	echo -e "\t\t RETURN = $R"
+	echo -e "\t\t\tKO"
+	exit;
+    fi
+    NB2=$(diff lol $MAP);
+    if [ "$NB2" != "" ]
+    then
+	echo -e "\t\t\tKO\n\t\tDIFF=$NB2"
+	exit;
+    else
+	echo -e "\t\t\tOK"
+    fi
+done
